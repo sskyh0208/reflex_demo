@@ -1,0 +1,22 @@
+services:
+  reflex:
+    container_name: reflex-python
+    build:
+      context: .
+      dockerfile: .docker/python/Dockerfile
+    tty: true
+    volumes:
+      - type: bind
+        source: ./src
+        target: /app
+    ports:
+      - target: 3000
+        published: ${FRONTEND_PUBLISHED_PORT:-3000}
+        protocol: tcp
+        mode: host
+      - target: 8000
+        published: ${BACKEND_PUBLISHED_PORT:-8000}
+        protocol: tcp
+        mode: host
+    working_dir: /app
+    command: reflex run --loglevel debug
